@@ -1,0 +1,46 @@
+# Objects
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.lib
+
+# log files
+*.log
+*.swp
+*.lock
+
+# In IAR Project
+*.ewt
+*.xrl
+*.pbi
+Debug/
+Release/
+settings/
+
+# In Keil Project
+*.uvguix*
+*.uvoptx
+*.i
+*.cod
+*.axf
+*.d
+*.lib
+*.crf
+*.scvd
+Objects/
+Listings/
+DebugConfig/
+
+# About eclipse
+.metadata/
+RemoteSystemsTempFiles/
+
+# AltiumDesigner folder
+__Previews/
+History/
+*Logs*/
+*Outputs*/
+*.PrjPcbStructure
