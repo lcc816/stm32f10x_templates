@@ -16,6 +16,7 @@
 *.ewt
 *.xrl
 *.pbi
+*.dep
 Debug/
 Release/
 settings/
