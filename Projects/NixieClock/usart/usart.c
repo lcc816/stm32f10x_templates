@@ -99,3 +99,22 @@ void USART1_SendData8(uint8_t Data)
     while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
         ;
 }
+
+/*******************************************************************************
+ * @brief  USART1收中断处理函数
+ * @param  None
+ * @retval None
+ *******************************************************************************/
+void USART1_IRQHandler(void)
+{
+    uint8_t val;
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
+    {
+        /* 读取接收数据寄存器 USART1->DR */
+        val = USART_ReceiveData(USART1);
+        /* do something ... */
+        if (val)
+        {
+        }
+    }
+}
