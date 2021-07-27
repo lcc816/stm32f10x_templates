@@ -28,6 +28,8 @@
 int main(void)
 {
     delay_init();
+    /* 设置NVIC中断分组2: 2位抢占优先级，2位响应优先级 */
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
     //USART1_Configuration(38400);
     //printf("Hello World!\r\n");
     WS2812B_Init();
