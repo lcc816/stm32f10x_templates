@@ -36,8 +36,10 @@ Listings/
 DebugConfig/
 
 # About eclipse
-.metadata/
 RemoteSystemsTempFiles/
+.metadata/
+*.launch
+.code_review_properties
 
 # AltiumDesigner folder
 __Previews/
