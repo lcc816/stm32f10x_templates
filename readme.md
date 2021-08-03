@@ -9,7 +9,7 @@
 
 ## 新建项目
 
-将 Project 目录下的 Template 目录拷贝一份，修改拷贝的目录名为新项目名。然后根据要用的 IDE 工具不同，编辑不同的项目配置文件。以下介绍 IAR、MDK（即 KEIL） 和 SW4STM32 三种 IDE 的项目配置方式。
+将 Project 目录下的 Template 目录拷贝一份，修改拷贝的目录名为新项目名。然后根据要用的 IDE 工具不同，编辑不同的项目配置文件。以下介绍 IAR、MDK（即 KEIL） 和 TrueSTUDIO 三种 IDE 的项目配置方式。
 
 > [!NOTE]
 > 采用上述目录结构，Libraries 目录下的标准库文件、启动文件或下载的开源库等都是可以复用的，新建项目只需从 Projects 下的模板轻量拷贝一些用户代码和项目配置。
@@ -97,7 +97,7 @@
 
   右键单击项目树中的项目名 -> Options for Target 'xxx'，进入选项配置窗口，选择 Device 标签页，选中自己的 MCU 型号。如下图所示。
 
-![KEIL 器件型号选择](Resources/Snipaste_2021-07-06_01-45-25.png)
+  ![KEIL 器件型号选择](Resources/Snipaste_2021-07-06_01-45-25.png)
 
 - **编译参数配置**
 
@@ -111,4 +111,66 @@
   
   ![MDK 调试器选择](Resources/Snipaste_2021-07-07_22-28-39.png)
 
-### SW4STM32 项目配置
+### TrueSTUDIO 项目配置
+
+TrueSTUIO 是 ST 官方推出的适用于 STM32 开发的免费 IDE，它跟 MDK 一样集合了代码编辑、项目配置、调试下载等多种功能，又由于它基于 eclipse，它在代码编辑方面强大许多。
+
+TrueSTUIO 也有工作空间的概念，且它的工作空间配置和项目源码的存放实际是独立的。为了便于新建项目的工作空间配置统一，这里以 Projects 作为工作空间目录，其中 .metadata 目录就保存了工作空间的原始配置。
+
+当前一个配置好的 TrueSTUDIO 项目模板如下图所示：
+
+![TrueSTUDIO 项目模板](Resources/Snipaste_2021-08-02_01-35-51.png)
+
+跟直接新建一个项目不同的是，上述模板的项目文件夹里不存在标准外设库、启动文件和系统时钟文件的副本，而只是在项目的资源树中添加了它们的链接，它们的实际存放位置仍位于 Libraries 目录下。这样做仍然是为了避免通过拷贝模板新建项目时发生太多无意义的拷贝。
+
+- **新建项目**
+
+  在 Projects 目录下拷贝 Template 并重命名为想要新建项目的名字。然后进入新项目目录，打开 .project 文件，更改其中的项目名字。
+
+  ![Import 向导](Resources/Snipaste_2021-08-08_19-11-58.png)
+
+  点击 File->Import 进入 Import 向导，如下选择 General->Existing Projects into Workspace，点击 Next。
+
+  ![Import 向导](Resources/Snipaste_2021-08-04_00-44-55.png)
+
+  点击浏览，选择新项目目录并确定，然后系统会解析项目名至 Projects 文本框，勾选项目名前面的复选框，点击 Finish，这样新项目就被导入工作空间了。
+
+  ![Import Projects](Resources/Snipaste_2021-08-04_01-39-30.png)
+
+  **添加 Include 路径**
+
+  新项目是从模板拷贝而来，开发的过程中我们可能要新增代码目录。如果新增了头文件目录，需要手动将其添加到编译器的搜索路径中。右键单击项目名称，点击 Properties 进入属性设置窗口，如下图。依次点击 C/C++ General->Paths and Symbols，然后点击 Includes 面板，右侧点击添加，输入头文件相对于项目目录的位置索引，点击 OK。
+
+  ![添加 include 路径](Resources/Snipaste_2021-08-04_00-47-33.png)
+
+  **裁剪外设和选择启动文件**
+
+  如上面所讲，外设库等公共文件是以目录链接的方式添加到项目资源树中。标准外设库里所有文件一起添加到了资源树里，可以通过文件过滤器设置排除不需要编译的外设源文件，从而达到裁剪的目的。新项目对要使用到源文件取消排除，如下图所示，右键单击要取消排除的源文件，选择 Resource Configurations->Exclude Form Build...，
+
+  ![排除或添加源文件](Resources/Snipaste_2021-08-04_00-52-17.png)
+
+  然后如下图所示，将需要取消排除的目标前的复选框去掉。
+
+  ![过滤器设置](Resources/Snipaste_2021-08-04_00-53-01.png)
+
+  几种不同型号器件的启动文件都被添加到了资源树中，需要用过滤器设置来选择使用对应的启动文件。如下图所示。
+
+  ![选择启动文件](Resources/Snipaste_2021-08-04_02-12-39.png)
+
+- **项目调试**
+
+  - 点击工具栏的 Debug 按钮进入调试会话。也可以通过在项目浏览器视图中右键单击项目名，然后选择 Debug As，Embedded C/C++ Debugging 进入调试会话。
+
+  - 项目第一次调试时，在开始调试会话前，TrueSTUDIO 会展示一个对话框用于用户确认调试配置，而此后该对话框将不再展示。
+
+  ![调试配置主面板](Resources/Snipaste_2021-08-02_23-08-40.png)
+
+  Main 面板通常不用更改，点击进入调试器（Debugger）面板，该面板包含可供选择的调试器和它们的配置与启动信息。
+
+  ![调试配置调试器设置面板](Resources/Snipaste_2021-08-02_23-34-53.png)
+
+  - 本项目调试器选择 ST_LINK，接口选择 SWD。接口使用 SWD 时，要确保串行线查看器（SWV）中的等待同步数据包（Wait for sync packet）复选框被选中。
+
+  - 其他项基本可以保持默认，然后点击 OK 按钮进入调试会话，如下图所示。
+
+  ![调试会话窗口](Resources/Snipaste_2021-08-03_00-22-09.png)
