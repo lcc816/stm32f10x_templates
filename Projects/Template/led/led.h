@@ -1,9 +1,9 @@
 /**
  ******************************************************************************
  * @file    led.h
- * @author  Lichangchun
+ * @author  lcc
  * @version
- * @date    6-Sept-2017
+ * @date    2023-01-20
  * @brief
  ******************************************************************************
  */
@@ -20,14 +20,36 @@
 /* Exported macro ------------------------------------------------------------*/
 
 /* Exported define -----------------------------------------------------------*/
-#define LED_PIN                         GPIO_Pin_2
-#define LED_GPIO_PORT                   GPIOD
-#define LED_GPIO_CLK                    RCC_APB2Periph_GPIOD
+#ifdef MINI_STM32 // Development Board
+#define LED_0_PIN                   GPIO_Pin_8
+#define LED_0_GPIO_PORT             GPIOA
+#define LED_0_GPIO_CLK              RCC_APB2Periph_GPIOA
+
+#define LED_1_PIN                   GPIO_Pin_2
+#define LED_1_GPIO_PORT             GPIOD
+#define LED_1_GPIO_CLK              RCC_APB2Periph_GPIOD
+
+#else // NewBee
+#define LED_0_PIN                   GPIO_Pin_4 // 需关闭JTAG功能
+#define LED_0_GPIO_PORT             GPIOB
+#define LED_0_GPIO_CLK              RCC_APB2Periph_GPIOB
+
+#define LED_1_PIN                   GPIO_Pin_5
+#define LED_1_GPIO_PORT             GPIOB
+#define LED_1_GPIO_CLK              RCC_APB2Periph_GPIOB
+#endif
+
+#define LED_OFF(x)  GPIO_SetBits(LED_##x##_GPIO_PORT, LED_##x##_PIN)
+#define LED_ON(x)   GPIO_ResetBits(LED_##x##_GPIO_PORT, LED_##x##_PIN)
+#define LED_FLIP(x) \
+    { \
+        if (GPIO_ReadOutputDataBit(LED_##x##_GPIO_PORT, LED_##x##_PIN)) \
+            GPIO_ResetBits(LED_##x##_GPIO_PORT, LED_##x##_PIN); \
+        else \
+            GPIO_SetBits(LED_##x##_GPIO_PORT, LED_##x##_PIN); \
+    }
 
 /* Exported functions ------------------------------------------------------- */
 void LED_Init(void);
-void LED_Off(void);
-void LED_On(void);
-void LED_Flip(void);
 
 #endif /* __LED_H */

@@ -152,6 +152,22 @@ void SysTick_Handler(void)
 {
 }*/
 
+#include "rich_led.h"
+
+/**
+ * @brief  This function handles timer3 interrupt request.
+ * @param  None
+ * @retval None
+ */
+void TIM3_IRQHandler(void)
+{
+    if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
+    {
+        action_ticks();
+    }
+    TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+}
+
 /**
   * @}
   */ 
