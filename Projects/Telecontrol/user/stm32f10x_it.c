@@ -145,6 +145,7 @@ void SysTick_Handler(void)
 
 extern u8 One_Ms_Timing; // 1ms全局时基
 extern u8 RF_Send_Tick;
+extern u8 Key_Scan_Tick;
 #include "rich_led.h"
 
 /**
@@ -154,17 +155,18 @@ extern u8 RF_Send_Tick;
  */
 void TIM3_IRQHandler(void)
 {
-    static u16 ms2 = 0, ms50 = 0, ms500 = 0;
+    static u16 ms10 = 0, ms50 = 0, ms500 = 0;
     if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
-        ms2++;
+        ms10++;
         ms50++;
         ms500++;
-        if (ms2 >= 2)
+        if (ms10 >= 10)
         {
-            ms2 = 0;
+            ms10 = 0;
+            Key_Scan_Tick = 1;
         }
-        if (ms50 >= 1500)
+        if (ms50 >= 50)
         {
             ms50 = 0;
             RF_Send_Tick = 1;

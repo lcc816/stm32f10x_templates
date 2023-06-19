@@ -19,13 +19,14 @@
 #include "string.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define COMM_FAILED_LIMIT 5
+#define COMM_FAILED_LIMIT 10
 
 /* Private macro -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
 u8 One_Ms_Timing = 0; // 1ms全局时基
 u8 RF_Send_Tick = 0;
+u8 Key_Scan_Tick = 0;
 
 const u8 peer_addr[5] = {'n', 'e', 'w', 'b', 'e'};
 const u8 my_addr[5]   = {'c', 'n', 't', 'r', 'l'};
@@ -61,6 +62,7 @@ int main(void)
     u16 key_map_last = 0;
     s16 throttle, yaw, roll, pitch;
     u16 adc_thro, adc_yaw, adc_roll, adc_pitch;
+    s16 dlt_yaw, dlt_roll, dlt_pitch;
     u8 buf[32];
     int i;
     u16 fail_cnt = 0;
@@ -126,12 +128,17 @@ int main(void)
         joystick_get_filtered_data(&adc_thro, &adc_yaw, &adc_roll, &adc_pitch);
     }
 
+    delay_ms(100); // 待读数稳定后校准
+    joystick_get_filtered_data(&adc_thro, &adc_yaw, &adc_roll, &adc_pitch);
+    dlt_yaw = adc_yaw - 2048;
+    dlt_roll = adc_roll - 2048;
+    dlt_pitch = adc_pitch - 2048;
+
     while (1)
     {
-        // 1ms时基
-        if (One_Ms_Timing == 1)
+        if (Key_Scan_Tick == 1)
         {
-            One_Ms_Timing = 0;
+            Key_Scan_Tick = 0;
             key_map = KEY_Scan();
             if (0 != key_map && key_map != key_map_last)
             {
@@ -185,9 +192,9 @@ int main(void)
             RF_Send_Tick = 0;
             joystick_get_filtered_data(&adc_thro, &adc_yaw, &adc_roll, &adc_pitch);
             throttle = adc_thro; // 0 ~ 4095
-            yaw = adc_yaw - 2048; // -2048 ~ 2048
-            roll = adc_roll - 2048;
-            pitch = adc_pitch - 2048;
+            yaw = adc_yaw - 2048 - dlt_yaw; // -2048 ~ 2048
+            roll = adc_roll - 2048 - dlt_roll;
+            pitch = adc_pitch - 2048 - dlt_pitch;
             memset(buf, 0, 32);
             sn++;
             buf[0] = sn & 0xFF;
@@ -204,8 +211,8 @@ int main(void)
             buf[11] = (pitch >> 8) & 0xFF;
             buf[12] = calc_sum(buf, 12);
 #ifdef DEBUG
-            printf("ADC Avg: %06d %06d %06d %06d\r\n", (int)adc_thro, (int)adc_yaw,
-                   (int)adc_roll, (int)adc_pitch);
+            printf("ADC Avg: %06d %06d %06d %06d\r\n", (int)throttle, (int)yaw,
+                   (int)roll, (int)pitch);
 #endif
             RF24_TxMode();
             status = RF24_SendData(buf, 13);

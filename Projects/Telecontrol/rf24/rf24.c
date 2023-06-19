@@ -525,7 +525,7 @@ int RF24_SendData(uint8_t *Buf, uint8_t Len)
     // Start transmission
     RF24_CE_HIGH();
 
-    timeout = 100;
+    timeout = 200;
     do
     {
         delay_us(100);
@@ -647,6 +647,9 @@ void RF24_DumpReg(void)
 void RF24_DefaultInit(void)
 {
     RF24_ConfigTypeDef cfg = NRF24L01_CONFIG_DEFAULT;
+    cfg.Channel = 52;
+    cfg.DataRate = RF24_2MBPS;
+    cfg.PowerLevel = RF24_PWR_LVL3;
 
     RF24_GpioInit();
     RF24_Config(&cfg);

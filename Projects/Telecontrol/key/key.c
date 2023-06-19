@@ -64,7 +64,7 @@ void KEY_Init(void)
 }
 
 /*******************************************************************************
- * @brief   按键扫描
+ * @brief   按键扫描, 扫描间隔 10ms, 计数大于 5 认为被按下
  * @param   None
  * @retval  the bitmap of all treggered keys
  ******************************************************************************/
@@ -83,7 +83,7 @@ uint16_t KEY_Scan(void)
         else
         {
             KEY_Array[i].Press_Cnt++;
-            if (KEY_Array[i].Press_Cnt > 10)
+            if (KEY_Array[i].Press_Cnt > 5)
                 bitmap |= KEY_BIT(i);
         }
     }
