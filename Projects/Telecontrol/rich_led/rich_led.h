@@ -6,8 +6,10 @@
  * @brief
  ******************************************************************************/
 
+#ifndef __RICH_LED_H_
+#define __RICH_LED_H_
+
 #include <stdint.h>
-#include <stdbool.h>
 #include "conf_led.h"
 
 struct led_config
@@ -46,3 +48,5 @@ void led_instance_init(void);
 void led_action_set(uint32_t action_id);
 
 void action_ticks(void);
+
+#endif /* __RICH_LED_H_ */

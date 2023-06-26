@@ -8,6 +8,7 @@
 
 #include "rich_led.h"
 #include <string.h>
+#include <stdbool.h>
 
 /* Uncomment the line below to debug and assert */
 //#define RICH_LED_DEBUG
