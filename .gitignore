@@ -20,6 +20,8 @@
 Debug/
 Release/
 settings/
+Obj/
+Exe/
 
 # In Keil Project
 *.uvguix*

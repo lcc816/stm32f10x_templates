@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_MD,USE_STDPERIPH_DRIVER,DEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\Libraries\CMSIS\Include;..\..\..\Libraries\CMSIS\Device\ST\STM32F10x\Include;..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\user;..\delay;..\led;..\usart;..\adc;..\dma;..\timer;..\key;..\spi;..\rf24;..\rich_led</IncludePath>
+              <IncludePath>..\..\..\Libraries\CMSIS\Include;..\..\..\Libraries\CMSIS\Device\ST\STM32F10x\Include;..\..\..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\user;..\delay;..\led;..\usart;..\adc;..\dma;..\timer;..\key;..\spi;..\rf24;..\rich_led;..\joystick</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -508,22 +508,12 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>adc</GroupName>
+          <GroupName>joystick</GroupName>
           <Files>
             <File>
-              <FileName>adc.c</FileName>
+              <FileName>joystick.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adc\adc.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>dma</GroupName>
-          <Files>
-            <File>
-              <FileName>dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\dma\dma.c</FilePath>
+              <FilePath>..\joystick\joystick.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1126,22 +1116,12 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>adc</GroupName>
+          <GroupName>joystick</GroupName>
           <Files>
             <File>
-              <FileName>adc.c</FileName>
+              <FileName>joystick.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\adc\adc.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>dma</GroupName>
-          <Files>
-            <File>
-              <FileName>dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\dma\dma.c</FilePath>
+              <FilePath>..\joystick\joystick.c</FilePath>
             </File>
           </Files>
         </Group>
